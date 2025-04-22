@@ -1,0 +1,10 @@
+const auth = require('./auth');
+router.use('/auth', auth);
+const user = require('./user');
+router.use('/user', user);
+const checkout = require('./checkout');
+router.use('/checkout', checkout);
+const product = require('./product');
+router.use('/product', product);
+const admin = require('./admin');
+router.use('/admin', admin);
