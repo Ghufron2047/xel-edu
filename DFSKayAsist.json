@@ -1,0 +1,94 @@
+[
+    {
+      "name": "Default Welcome Intent",
+      "trainingPhrases": [
+        { "text": "Halo" },
+        { "text": "Hi" },
+        { "text": "Selamat datang" },
+        { "text": "Skay" },
+        { "text": "Hai Skay" }
+      ],
+      "responses": [
+        "Halo, saya Skay Assistant 🚀 Siap bantu kamu di Xel-Edu! Mau ke mana?",
+        "Halo! Butuh bantuan? Saya siap bantu kamu menavigasi Xel-Edu."
+      ]
+    },
+    {
+      "name": "Go to Home",
+      "trainingPhrases": [
+        { "text": "Buka halaman utama" },
+        { "text": "Home" },
+        { "text": "Kembali ke beranda" }
+      ],
+      "responses": ["Baik, membuka halaman Home..."]
+    },
+    {
+      "name": "Go to Academic",
+      "trainingPhrases": [
+        { "text": "Saya ingin materi gratis" },
+        { "text": "Buka Academic" },
+        { "text": "Tampilkan pelajaran" }
+      ],
+      "responses": ["Berikut materi gratis di halaman Academic ya!"]
+    },
+    {
+      "name": "Go to Source Code",
+      "trainingPhrases": [
+        { "text": "Saya mau source code" },
+        { "text": "Ada kode program?" },
+        { "text": "Buka halaman Source Code" }
+      ],
+      "responses": ["Berikut ini halaman Source Code yang kamu cari."]
+    },
+    {
+      "name": "Go to Tools",
+      "trainingPhrases": [
+        { "text": "Saya butuh tools gratis" },
+        { "text": "Ada tools?" },
+        { "text": "Tools tersedia apa aja?" }
+      ],
+      "responses": ["Silakan cek tools gratis di halaman Tools! 🔧"]
+    },
+    {
+      "name": "Go to Web App",
+      "trainingPhrases": [
+        { "text": "Buka produk Web App" },
+        { "text": "Saya mau web app" },
+        { "text": "Ada produk website?" }
+      ],
+      "responses": ["Berikut produk Web App dari Xel-Edu!"]
+    },
+    {
+      "name": "Go to Android",
+      "trainingPhrases": [
+        { "text": "Saya mau aplikasi Android" },
+        { "text": "Buka Android apps" },
+        { "text": "Ada produk Android?" }
+      ],
+      "responses": ["Berikut produk Android dari Xel-Edu 📱"]
+    },
+    {
+      "name": "Go to About",
+      "trainingPhrases": [
+        { "text": "Tentang Xel-Edu" },
+        { "text": "Apa itu Xel-Edu?" },
+        { "text": "Buka halaman About" }
+      ],
+      "responses": ["Xel-Edu adalah platform edukasi futuristik! Cek halaman About untuk info lengkap."]
+    },
+    {
+      "name": "Help",
+      "trainingPhrases": [
+        { "text": "Saya butuh bantuan" },
+        { "text": "Gimana cara bayar?" },
+        { "text": "Cara checkout gimana?" },
+        { "text": "Bisa bantu login?" }
+      ],
+      "responses": [
+        "Kamu bisa checkout dengan upload bukti bayar di halaman Checkout.",
+        "Kalau lupa password, kamu bisa reset di halaman Login ➝ Reset Password.",
+        "Saya siap bantu! Mau saya arahkan ke halaman tertentu?"
+      ]
+    }
+  ]
+  
