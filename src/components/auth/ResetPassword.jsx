@@ -1,45 +1,30 @@
-import React, { useState } from "react";
+// components/auth/ResetPassword.jsx
+import { useState } from 'react';
 
-const ResetPassword = () => {
-  const [email, setEmail] = useState("");
+export default function ResetPassword() {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleReset = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/auth/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/auth?mode=reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
-
-      if (res.ok) {
-        alert("Link reset dikirim ke email.");
-      } else {
-        alert("Gagal mengirim reset password.");
-      }
+      const data = await res.json();
+      setMessage(data.message);
     } catch (err) {
-      console.error(err);
+      setMessage('Gagal reset password');
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Reset Password</h2>
-      <form onSubmit={handleReset} className="auth-form">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button type="submit">Kirim Link Reset</button>
-        <p>
-          Ingat password? <a href="/login">Login</a>
-        </p>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+      <button type="submit">Reset Password</button>
+      <p>{message}</p>
+    </form>
   );
-};
-
-export default ResetPassword;
+}

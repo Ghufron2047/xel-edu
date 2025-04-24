@@ -1,59 +1,37 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// components/auth/Login.jsx
+import { useState } from 'react';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+export default function Login() {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [message, setMessage] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      // Panggil API login (contoh)
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await fetch('/api/auth?mode=login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
       });
-
-      if (response.ok) {
-        navigate("/profile");
-      } else {
-        alert("Login gagal!");
+      const data = await res.json();
+      setMessage(data.message);
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        // redirect or do whatever
       }
     } catch (err) {
-      console.error(err);
+      setMessage('Gagal login');
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Login to Xel-Edu</h2>
-      <form onSubmit={handleLogin} className="auth-form">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-        <p>
-          Belum punya akun? <a href="/register">Register</a>
-        </p>
-        <p>
-          Lupa password? <a href="/reset-password">Reset</a>
-        </p>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input name="email" placeholder="Email" onChange={handleChange} />
+      <input name="password" type="password" placeholder="Password" onChange={handleChange} />
+      <button type="submit">Login</button>
+      <p>{message}</p>
+    </form>
   );
-};
-
-export default Login;
+}

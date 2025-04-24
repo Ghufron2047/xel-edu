@@ -1,146 +1,144 @@
-// src/components/AdminDashboard.jsx
-import React, { useEffect, useState } from "react";
-import "../index.css";
+// src/pages/AdminDashboard.jsx
+import React, { useState, useEffect } from 'react';
 
-const AdminDashboard = () => {
-  const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    description: "",
-    price: "",
-  });
+export default function AdminDashboard() {
+  const [produkList, setProdukList] = useState([]);
+  const [form, setForm] = useState({ title: '', description: '', price: '' });
+  const [editingId, setEditingId] = useState(null);
+  const [checkoutList, setCheckoutList] = useState([]);
+  const [message, setMessage] = useState('');
 
-  const [transactions, setTransactions] = useState([]);
+  const token = localStorage.getItem('token');
 
-  const fetchTransactions = async () => {
+  // === CRUD PRODUK ===
+  const fetchProduk = async () => {
+    const res = await fetch('/api/product');
+    const data = await res.json();
+    setProdukList(data.products || []);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const method = editingId ? 'PUT' : 'POST';
+    const url = editingId ? `/api/product?id=${editingId}` : '/api/product';
+
+    const res = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(form),
+    });
+
+    const result = await res.json();
+    if (result.success) {
+      setForm({ title: '', description: '', price: '' });
+      setEditingId(null);
+      fetchProduk();
+    } else {
+      alert(result.message || 'Gagal simpan produk');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const res = await fetch(`/api/product?id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await res.json();
+    if (result.success) fetchProduk();
+  };
+
+  const handleEdit = (produk) => {
+    setForm({ title: produk.title, description: produk.description, price: produk.price });
+    setEditingId(produk._id);
+  };
+
+  // === KELAS TRANSAKSI ===
+  const fetchTransaksi = async () => {
+    const res = await fetch('/api/checkout');
+    const json = await res.json();
+    if (json.success) setCheckoutList(json.data);
+  };
+
+  const updateStatus = async (id, newStatus) => {
     try {
-      const res = await fetch("/api/admin/product/transactions", {
+      const res = await fetch('/api/transaction', {
+        method: 'PATCH',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token") || "dummy-admin-token"}`,
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ id, status: newStatus }),
       });
-      const data = await res.json();
-      if (res.ok) setTransactions(data);
-      else console.error("Gagal fetch transaksi:", data.error);
-    } catch (error) {
-      console.error("Error:", error);
+      const json = await res.json();
+      setMessage(json.message);
+      if (json.success) fetchTransaksi();
+    } catch (err) {
+      setMessage('Gagal update status transaksi');
     }
   };
 
   useEffect(() => {
-    fetchTransactions();
+    fetchProduk();
+    fetchTransaksi();
   }, []);
 
-  const updateStatus = async (id) => {
-    try {
-      const res = await fetch(`/api/admin/product/update-transaction.js`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token") || "dummy-admin-token"}`,
-        },
-        body: JSON.stringify({ transactionId: id, status: "Success" }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        alert("Status berhasil diubah!");
-        fetchTransactions(); // refresh list
-      } else {
-        alert(data.error || "Gagal mengubah status");
-      }
-    } catch (err) {
-      alert("Terjadi kesalahan.");
-    }
-  };
-
-  const handleChange = (e) => {
-    setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
-  };
-
-  const handleAdd = () => {
-    setProducts([...products, { ...newProduct, id: Date.now() }]);
-    setNewProduct({ name: "", description: "", price: "" });
-  };
-
-  const handleDelete = (id) => {
-    setProducts(products.filter((product) => product.id !== id));
-  };
-
   return (
-    <section className="admin-section">
+    <div>
       <h2>Admin Dashboard</h2>
 
-      {/* Form Tambah Produk */}
-      <div className="admin-form">
+      {/* ==== FORM PRODUK ==== */}
+      <h3>Kelola Produk</h3>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
-          placeholder="Nama Produk"
-          value={newProduct.name}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <input
-          type="text"
-          name="description"
+          placeholder="Judul"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+        /><br />
+        <textarea
           placeholder="Deskripsi"
-          value={newProduct.description}
-          onChange={handleChange}
-          className="input-field"
-        />
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+        /><br />
         <input
           type="number"
-          name="price"
           placeholder="Harga"
-          value={newProduct.price}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <button className="submit-button" onClick={handleAdd}>Tambah Produk</button>
-      </div>
+          value={form.price}
+          onChange={(e) => setForm({ ...form, price: e.target.value })}
+        /><br />
+        <button type="submit">{editingId ? 'Update Produk' : 'Tambah Produk'}</button>
+      </form>
 
-      {/* Daftar Produk */}
-      <div className="product-list">
-        {products.map((product) => (
-          <div className="product-card" key={product.id}>
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <span>Rp {product.price}</span>
-            <button className="delete-button" onClick={() => handleDelete(product.id)}>Hapus</button>
-          </div>
+      <ul>
+        {produkList.map((produk) => (
+          <li key={produk._id}>
+            <b>{produk.title}</b> - Rp{produk.price}<br />
+            {produk.description}<br />
+            <button onClick={() => handleEdit(produk)}>Edit</button>
+            <button onClick={() => handleDelete(produk._id)}>Hapus</button>
+            <hr />
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {/* Daftar Transaksi */}
-      <div className="transaction-list">
-        <h3>Daftar Transaksi</h3>
-        {transactions.length === 0 ? (
-          <p>Belum ada transaksi.</p>
-        ) : (
-          transactions.map((tx) => (
-            <div key={tx._id} className="transaction-card">
-              <p><strong>Email:</strong> {tx.userId?.email || "-"}</p>
-              <p><strong>Produk:</strong> {tx.productId?.title || "-"}</p>
-              <p><strong>Harga:</strong> Rp {tx.productId?.price || "?"}</p>
-              <p><strong>Status:</strong> {tx.status}</p>
-              {tx.buktiBayar && (
-                <img
-                  src={tx.buktiBayar}
-                  alt="Bukti Bayar"
-                  className="bukti-preview"
-                />
-              )}
-              {tx.status !== "Success" && (
-                <button className="status-button" onClick={() => updateStatus(tx._id)}>
-                  Tandai Sukses
-                </button>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-    </section>
+      {/* ==== DATA TRANSAKSI ==== */}
+      <h3>Kelola Transaksi</h3>
+      {checkoutList.map(item => (
+        <div key={item._id}>
+          <p>
+            <b>{item.name}</b> - {item.product} <br />
+            Status: <b>{item.status}</b><br />
+            <button onClick={() => updateStatus(item._id, 'Sukses')}>Ubah ke Sukses</button>
+          </p>
+          <hr />
+        </div>
+      ))}
+      <p>{message}</p>
+    </div>
   );
-};
-
-export default AdminDashboard;
+}

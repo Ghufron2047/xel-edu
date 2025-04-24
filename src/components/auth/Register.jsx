@@ -1,54 +1,34 @@
-import React, { useState } from "react";
+// components/auth/Register.jsx
+import { useState } from 'react';
 
-const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Register() {
+  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [message, setMessage] = useState('');
 
-  const handleRegister = async (e) => {
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await fetch('/api/auth?mode=register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
       });
-
-      if (res.ok) {
-        alert("Registrasi berhasil! Silakan login.");
-        window.location.href = "/login";
-      } else {
-        alert("Registrasi gagal.");
-      }
+      const data = await res.json();
+      setMessage(data.message);
     } catch (err) {
-      console.error(err);
+      setMessage('Gagal registrasi');
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Register to Xel-Edu</h2>
-      <form onSubmit={handleRegister} className="auth-form">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Register</button>
-        <p>
-          Sudah punya akun? <a href="/login">Login</a>
-        </p>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input name="name" placeholder="Nama" onChange={handleChange} />
+      <input name="email" placeholder="Email" onChange={handleChange} />
+      <input name="password" type="password" placeholder="Password" onChange={handleChange} />
+      <button type="submit">Register</button>
+      <p>{message}</p>
+    </form>
   );
-};
-
-export default Register;
+}
