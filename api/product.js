@@ -1,6 +1,6 @@
-import connectDB from './utils/db';
-import Product from './models/Product';
-import User from './models/User';
+import connectDB from '../utils/db';
+import Product from '../models/Product';
+import User from '../models/User';
 import jwt from 'jsonwebtoken';
 
 connectDB();

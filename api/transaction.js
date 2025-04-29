@@ -1,6 +1,6 @@
-import connectDB from './utils/db';
-import Checkout from './models/Checkout';
-import User from './models/User';
+import connectDB from '../utils/db';
+import Checkout from '../models/Checkout';
+import User from '../models/User';
 import jwt from 'jsonwebtoken';
 
 connectDB();

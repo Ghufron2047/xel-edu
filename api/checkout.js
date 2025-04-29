@@ -1,5 +1,5 @@
-import connectDB from './utils/db';
-import Checkout from './models/Checkout';
+import connectDB from '../utils/db';
+import Checkout from '../models/Checkout';
 
 connectDB();
 
