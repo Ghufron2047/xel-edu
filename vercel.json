@@ -5,6 +5,6 @@
     { "src": "src/index.html", "use": "@vercel/static" }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/src/index.html" }
+    { "source": "/(.*)", "destination": "/src/index.jsx" }
   ]
 }
