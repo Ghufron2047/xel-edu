@@ -28,3 +28,5 @@ export default async function handler(req, res) {
 
   return res.status(405).json({ success: false, message: 'Method tidak diizinkan' });
 }
+import Notification from "@/models/Notification";
+await Notification.create({ message: `Transaksi baru dari ${user.email}` });

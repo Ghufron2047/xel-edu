@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+'use client';
+import { useState } from 'react';
 
-const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dmtsy9msz/image/upload";
-const UPLOAD_PRESET = "xel-upload";
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dmtsy9msz/image/upload';
+const UPLOAD_PRESET = 'xel-upload';
 
-const Checkout = () => {
+export default function CheckoutPage() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
@@ -12,30 +13,22 @@ const Checkout = () => {
 
   const handleUpload = async () => {
     if (!file) return setMessage('Pilih file terlebih dahulu.');
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', UPLOAD_PRESET);
-
     setUploading(true);
     try {
-      const res = await fetch(CLOUDINARY_URL, {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await res.json();
-
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', UPLOAD_PRESET);
+      const uploadRes = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+      const data = await uploadRes.json();
       const proofUrl = data.secure_url;
-      const response = await fetch('/api/checkout', {
+      const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ proofUrl }),
       });
-
-      const result = await response.json();
+      const result = await res.json();
       setMessage(result.message || 'Berhasil diupload!');
-    } catch (err) {
+    } catch {
       setMessage('Upload gagal');
     } finally {
       setUploading(false);
@@ -52,6 +45,4 @@ const Checkout = () => {
       {message && <p>{message}</p>}
     </div>
   );
-};
-
-export default Checkout;
+}
