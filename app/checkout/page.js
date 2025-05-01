@@ -1,6 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
-
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dmtsy9msz/image/upload';
