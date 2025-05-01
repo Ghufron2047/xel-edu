@@ -1,10 +1,10 @@
 'use client'
-import { useState } from 'react'
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dmtsy9msz/image/upload';
-const UPLOAD_PRESET = 'xel-upload';
+
+import '../globals.css';
 
 export default function CheckoutPage() {
   const router = useRouter()
