@@ -2,7 +2,7 @@ import '@app/globals.css';
 import NavBar from '../components/Navbar';
 import DarkModeToggle from '../components/DarkModeToggle';
 import SkayAssistant from '../components/SkayAssistant';
-import Footer from '../components/footer';
+import Footer from '../components/Footer';
 
 export const metadata = {
   title: 'Xel-Edu',
