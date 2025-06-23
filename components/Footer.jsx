@@ -1,10 +1,12 @@
-export default function Footer() {
+const Footer = () => {
   return (
-    <footer className="bg-black text-gray-400 text-sm py-6 px-4 mt-16">
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center">
-        <p>&copy; {new Date().getFullYear()} Xel-Edu. All rights reserved.</p>
-        <p className="mt-2 sm:mt-0">Built with ❤️ for modern learners.</p>
-      </div>
+    <footer className="text-center py-8 bg-[#111] text-gray-400">
+      <p>&copy; 2025 Xel-Edu. All rights reserved.</p>
+      <p className="mt-1">
+        Built with <span className="text-red-500">❤</span> for modern learners.
+      </p>
     </footer>
   );
-}
+};
+
+export default Footer;
