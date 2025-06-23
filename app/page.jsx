@@ -1,8 +1,8 @@
 "use client";
 
-import "./globals.css";
 import { motion } from "framer-motion";
-import SkayAssistant from "@/components/SkayAssistant";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const sections = [
   {
@@ -15,77 +15,83 @@ const sections = [
     id: "sourcecode",
     emoji: "💻",
     title: "Source Code",
-    desc: "Get instant access to source codes of our mini projects, frameworks, and real-world app examples.",
+    desc: "Get access to real-world projects, templates, and frameworks built by developers for developers.",
   },
   {
     id: "tools",
     emoji: "🛠️",
     title: "Tools",
-    desc: "Discover free web-based tools for productivity, formatting, conversion, and more. No ads, forever.",
+    desc: "Use free, fast, and ad-free web tools for productivity, formatting, AI, and more.",
   },
   {
     id: "webapp",
     emoji: "🌐",
     title: "Web App",
-    desc: "Browse our premium web apps built for learning, productivity, and business use cases.",
+    desc: "Browse premium, responsive web apps for learning and business use cases.",
   },
   {
     id: "android",
     emoji: "📱",
     title: "Android",
-    desc: "Download Android apps directly or via Play Store. Designed for speed, stability, and offline use.",
+    desc: "Download Android apps built for stability, speed, and offline-first usage.",
   },
   {
     id: "about",
     emoji: "ℹ️",
     title: "About",
-    desc: "Xel-Edu is an independent platform focused on developer education, tool-building, and AI integration.",
+    desc: "Xel-Edu is a futuristic learning and tool platform for developers, educators, and innovators.",
   },
 ];
 
 export default function HomePage() {
   return (
-    <main className="bg-gradient-to-tr from-gray-900 via-indigo-900 to-black text-white min-h-screen font-sans scroll-smooth">
-      {/* Hero Section */}
-      <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-6xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500"
+    <>
+      <Navbar />
+      <main className="bg-background text-foreground font-sans scroll-smooth">
+        {/* Hero Section */}
+        <section
+          id="home"
+          className="min-h-screen flex flex-col justify-center items-center text-center px-4 bg-gradient-to-tr from-indigo-500 via-purple-600 to-pink-500 text-white"
         >
-          Welcome to Xel-Edu
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-xl md:text-2xl max-w-2xl text-gray-300"
-        >
-          Futuristic Learning Platform for Modern Developers & Tech Enthusiasts
-        </motion.p>
-      </section>
-
-      {/* Sections */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6 md:px-16 py-20">
-        {sections.map((sec, index) => (
-          <motion.div
-            key={sec.id}
-            id={sec.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            viewport={{ once: true }}
-            className="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-white drop-shadow-lg"
           >
-            <h3 className="text-2xl font-bold mb-2">{sec.emoji} {sec.title}</h3>
-            <p className="text-gray-300">{sec.desc}</p>
-          </motion.div>
-        ))}
-      </section>
+            Welcome to Xel-Edu
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="text-xl mt-4 max-w-2xl text-white/90"
+          >
+            Futuristic Learning Platform for Developers, Creators, and Modern Thinkers.
+          </motion.p>
+        </section>
 
-      {/* Optional Assistant */}
-      <SkayAssistant />
-    </main>
+        {/* Section Cards */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 py-20">
+          {sections.map((item, i) => (
+            <motion.div
+              key={item.id}
+              id={item.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-lg hover:shadow-2xl transition-all"
+            >
+              <h3 className="text-2xl font-bold text-white mb-2">
+                {item.emoji} {item.title}
+              </h3>
+              <p className="text-gray-300">{item.desc}</p>
+            </motion.div>
+          ))}
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
