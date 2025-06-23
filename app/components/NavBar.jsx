@@ -1,40 +1,39 @@
 "use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-const menuItems = [
-  { name: "Home", href: "/" },
-  { name: "Academic", href: "/academic" },
-  { name: "Source Code", href: "/source-code" },
-  { name: "Tools", href: "/tools" },
-  { name: "Web App", href: "/web-app" },
-  { name: "Android", href: "/android" },
-  { name: "About", href: "/about" },
-  { name: "Checkout", href: "/checkout" },
-  { name: "Profile", href: "/profile" },
-  { name: "Admin", href: "/admin" },
-  { name: "Transaksi", href: "/transaksi" },
-  { name: "History", href: "/history" },
-];
+import { useEffect, useState } from "react";
+import { Moon, Sun } from "lucide-react";
 
-export default function NavBar() {
-  const pathname = usePathname();
+export default function Navbar() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   return (
-    <nav className="flex flex-wrap items-center justify-between p-4 shadow-md bg-white dark:bg-gray-800 sticky top-0 z-50">
-      <h1 className="text-2xl font-bold">Xel-Edu</h1>
-      <div className="flex flex-wrap gap-4 mt-2">
-        {menuItems.map(({ name, href }) => (
-          <Link
-            key={name}
-            href={href}
-            className={`hover:text-blue-500 transition-colors ${
-              pathname === href ? "font-semibold text-blue-500" : ""
-            }`}
-          >
-            {name}
-          </Link>
-        ))}
-      </div>
+    <nav className="navbar text-white flex justify-between items-center">
+      <div className="logo text-xl font-bold text-cyan-400">Xel-Edu</div>
+      <ul className="nav-links hidden sm:flex gap-6 text-sm">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#academic">Academic</a></li>
+        <li><a href="#sourcecode">Code</a></li>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#webapp">WebApp</a></li>
+        <li><a href="#android">Android</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="theme-toggle ml-4"
+        aria-label="Toggle Dark Mode"
+      >
+        {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
     </nav>
   );
 }
