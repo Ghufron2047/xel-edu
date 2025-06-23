@@ -1,4 +1,4 @@
-import './globals.css'; // pastikan path ini benar
+import '@/app/globals.css';
 import NavBar from '../components/Navbar';
 import DarkModeToggle from '../components/DarkModeToggle';
 import SkayAssistant from '../components/SkayAssistant';
